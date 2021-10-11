@@ -1,12 +1,12 @@
 #play wav files using playsoiund library
 #from playsound import playsound
 
-#playsound('C:/Users/Classic/Downloads/file_example_WAV_10MG.wav')
+#playsound('file_example_WAV_10MG.wav')
 #---------------------------------------------------------------
 # play wav file using simplesound
 import simpleaudio as sa
 
-filename = 'C:/Users/Classic/Downloads/file_example_WAV_10MG.wav'
+filename = 'file_example_WAV_10MG.wav'
 wave_obj = sa.WaveObject.from_wave_file(filename)
 #play_obj = wave_obj.play()
 #play_obj.wait_done()  # Wait until sound has finished playing
