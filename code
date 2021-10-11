@@ -1,0 +1,90 @@
+#play wav files using playsoiund library
+#from playsound import playsound
+
+#playsound('C:/Users/Classic/Downloads/file_example_WAV_10MG.wav')
+#---------------------------------------------------------------
+# play wav file using simplesound
+import simpleaudio as sa
+
+filename = 'C:/Users/Classic/Downloads/file_example_WAV_10MG.wav'
+wave_obj = sa.WaveObject.from_wave_file(filename)
+#play_obj = wave_obj.play()
+#play_obj.wait_done()  # Wait until sound has finished playing
+#-----------------------------------------------------------------------
+import numpy as np
+import simpleaudio as sa
+
+frequency = 440  # Our played note will be 440 Hz
+fs = 44100  # 44100 samples per second
+seconds = 3  # Note duration of 3 seconds
+
+# Generate array with seconds*sample_rate steps, ranging between 0 and seconds
+t = np.linspace(0, seconds, seconds * fs, False)
+
+# Generate a 440 Hz sine wave
+note = np.sin(frequency * t * 2 * np.pi)
+
+# Ensure that highest value is in 16-bit range
+audio = note * (2**15 - 1) / np.max(np.abs(note))
+# Convert to 16-bit data
+audio = audio.astype(np.int16)
+
+# Start playback
+#play_obj = sa.play_buffer(audio, 1, 2, fs)
+
+# Wait for playback to finish before exiting
+#play_obj.wait_done()
+#--------------------------------------------
+import sounddevice as sd
+import soundfile as sf
+
+#filename = 'myfile.wav'
+# Extract data and sampling rate from file
+data, fs = sf.read(filename, dtype='float32')
+#sd.play(data, fs)
+#status = sd.wait()  # Wait until file is done playing
+#----------------------------------------------------------------
+from pydub import AudioSegment
+from pydub.playback import play
+
+sound = AudioSegment.from_wav(filename)
+#play(sound)
+#---------------------------------------------------------------
+from pydub import AudioSegment
+from pydub.playback import play
+
+#sound = AudioSegment.from_mp3('myfile.mp3')
+#play(sound)
+#--------------------------------------------------------------
+import pyaudio
+import wave
+
+#filename = 'myfile.wav'
+
+# Set chunk size of 1024 samples per data frame
+chunk = 1024
+
+# Open the sound file
+wf = wave.open('output.wav', 'rb')
+
+# Create an interface to PortAudio
+p = pyaudio.PyAudio()
+
+# Open a .Stream object to write the WAV file to
+# 'output = True' indicates that the sound will be played rather than recorded
+stream = p.open(format = p.get_format_from_width(wf.getsampwidth()),
+                channels = wf.getnchannels(),
+                rate = wf.getframerate(),
+                output = True)
+
+# Read data in chunks
+data = wf.readframes(chunk)
+
+# Play the sound by writing the audio data to the stream
+while data != '':
+    stream.write(data)
+    data = wf.readframes(chunk)
+
+# Close and terminate the stream
+stream.close()
+p.terminate()
